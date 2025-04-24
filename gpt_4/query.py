@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI, OpenAIError
 import os
 import time
 import json
@@ -37,8 +37,8 @@ def query(system, user_contents, assistant_contents, model='gpt-4', save_path=No
         messages.append({"role": "assistant", "content": assistant_contents[idx]})
     messages.append({"role": "user", "content": user_contents[-1]})
 
-    openai.api_key = os.environ["OPENAI_API_KEY"]
-    response = openai.ChatCompletion.create(
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=temperature
